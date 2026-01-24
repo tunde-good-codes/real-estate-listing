@@ -17,8 +17,8 @@ export class ListingController {
   @UseInterceptors(FilesInterceptor("images"))
   create(
     @Body() createListingDto: CreateListingDto,
-    @UploadedFiles() files: Express.Multer.File[]
+    @UploadedFiles() images: Express.Multer.File[]
   ) {
-    return this.listingService.create(createListingDto);
+    return this.listingService.create(createListingDto, images);
   }
 }
