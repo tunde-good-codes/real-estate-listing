@@ -1,13 +1,24 @@
-import { Controller, Post, Body } from "@nestjs/common";
+import {
+  Controller,
+  Post,
+  Body,
+  UseInterceptors,
+  UploadedFiles,
+} from "@nestjs/common";
 import { ListingService } from "./listing.service";
 import { CreateListingDto } from "./dto/create-listing.dto";
+import { FilesInterceptor } from "@nestjs/platform-express";
 
 @Controller("listing")
 export class ListingController {
   constructor(private readonly listingService: ListingService) {}
 
   @Post()
-  create(@Body() createListingDto: CreateListingDto) {
+  @UseInterceptors(FilesInterceptor("images"))
+  create(
+    @Body() createListingDto: CreateListingDto,
+    @UploadedFiles() files: Express.Multer.File[]
+  ) {
     return this.listingService.create(createListingDto);
   }
 }
