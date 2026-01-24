@@ -1,6 +1,7 @@
 import { IsInt, IsNotEmpty, IsOptional, IsString, Min } from "class-validator";
+import { CreateListingInput } from "../listing.types";
 
-export class CreateListingDto {
+export class CreateListingDto implements CreateListingInput {
   @IsString()
   @IsNotEmpty()
   label: string;
@@ -21,6 +22,10 @@ export class CreateListingDto {
   @IsString()
   @IsNotEmpty()
   addressZipcode: string;
+
+  @IsString()
+  @IsNotEmpty()
+  addressState: string;
 
   @IsInt()
   @Min(0)
