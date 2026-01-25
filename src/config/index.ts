@@ -7,5 +7,5 @@ export default () => ({
     password: process.env.REDIS_PASSWORD,
   },
   host: process.env.host,
-  apiKey: process.env.JWT_SECRET
+  apiKey: process.env.JWT_SECRET,
 });

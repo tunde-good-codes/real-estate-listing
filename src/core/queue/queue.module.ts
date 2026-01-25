@@ -1,4 +1,26 @@
-import { Module } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { Module } from "@nestjs/common";
+import { BullModule } from "@nestjs/bull";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
-@Module({})
+@Module({
+  imports: [
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => {
+        const username = configService.get("redis.username");
+        const password = configService.get("redis.password");
+        return {
+          redis: {
+            host: configService.get("redis.host"),
+            port: configService.get("redis.port"),
+            ...(username && { username }),
+            ...(password && { password }),
+          },
+        };
+      },
+      inject: [ConfigService],
+    }),
+  ],
+})
 export class QueueModule {}
