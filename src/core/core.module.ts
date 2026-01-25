@@ -11,6 +11,7 @@ import { RedisModule } from "./redis/redis.module";
 import { DatabaseModule } from "src/database/databse.module";
 import { UrlModule } from "src/modules/url/url.module";
 import { UidModule } from "src/services/uid/uid.module";
+import { QueueModule } from './queue/queue.module';
 
 @Global()
 @Module({
@@ -24,6 +25,7 @@ import { UidModule } from "src/services/uid/uid.module";
 
     UrlModule,
     UidModule,
+    QueueModule,
   ],
   providers: [
     {
