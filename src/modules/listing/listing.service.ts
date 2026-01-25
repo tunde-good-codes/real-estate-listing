@@ -1,10 +1,14 @@
 import { Injectable } from "@nestjs/common";
 import { CreateListingDto } from "./dto/create-listing.dto";
 import { PrismaService } from "src/database/prisma.service";
+import { ListingProducer } from "./queue/listing.producers";
 
 @Injectable()
 export class ListingService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly listingQueue: ListingProducer
+  ) {}
   async create({
     data,
     images,
@@ -12,11 +16,14 @@ export class ListingService {
     data: CreateListingDto;
     images: Express.Multer.File[];
   }) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    console.log("images ", images);
-
-    return await this.prismaService.listing.create({
+    const listing = await this.prismaService.listing.create({
       data,
     });
+    for (const image of images) {
+      // send image to queue
+      await this.listingQueue.createListingImage(image);
+    }
+
+    return listing;
   }
 }

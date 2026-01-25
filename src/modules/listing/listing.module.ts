@@ -2,10 +2,13 @@ import { Module } from "@nestjs/common";
 import { ListingService } from "./listing.service";
 import { ListingController } from "./listing.controller";
 import { BullModule } from "@nestjs/bull";
+import { ListingProducer } from "./queue/listing.producers";
+import { ListingConsumer } from "./queue/lisitng.consumers";
+import { LISTING_QUEUE } from "./queue/queue.constant";
 
 @Module({
-  imports: [BullModule.registerQueue({ name: "listing" })],
+  imports: [BullModule.registerQueue({ name: LISTING_QUEUE })],
   controllers: [ListingController],
-  providers: [ListingService],
+  providers: [ListingService, ListingProducer, ListingConsumer],
 })
 export class ListingModule {}

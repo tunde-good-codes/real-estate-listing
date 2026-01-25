@@ -1,10 +1,11 @@
 import { Process, Processor } from "@nestjs/bull";
-import { Job } from "bull";
+import type { Job } from "bull";
+import { LISTING_QUEUE } from "./queue.constant";
 
-@Processor(`listing`)
+@Processor(LISTING_QUEUE)
 export class ListingConsumer {
   @Process(`createListingImage`)
-  async createListingImage(job: Job<Express.Multer.File>) {
+  createListingImage(job: Job<Express.Multer.File>) {
     console.log(`FILE PROCESSED ASYNC IN QUEUE:`, job.data.originalname);
     return job.data;
   }
