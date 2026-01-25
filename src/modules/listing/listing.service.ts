@@ -13,6 +13,8 @@ export class ListingService {
     images: Express.Multer.File[];
   }) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    console.log("images ", images);
+
     return await this.prismaService.listing.create({
       data,
     });
