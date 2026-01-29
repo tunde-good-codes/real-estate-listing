@@ -5,9 +5,17 @@ import { BullModule } from "@nestjs/bull";
 import { ListingProducer } from "./queue/listing.producers";
 import { ListingConsumer } from "./queue/lisitng.consumers";
 import { LISTING_QUEUE } from "./queue/queue.constant";
+import { BullBoardModule } from "@bull-board/nestjs";
+import { BullAdapter } from "@bull-board/api/bullAdapter";
 
 @Module({
-  imports: [BullModule.registerQueue({ name: LISTING_QUEUE })],
+  imports: [
+    BullModule.registerQueue({ name: LISTING_QUEUE }),
+    BullBoardModule.forFeature({
+      name: LISTING_QUEUE,
+      adapter: BullAdapter,
+    }),
+  ],
   controllers: [ListingController],
   providers: [ListingService, ListingProducer, ListingConsumer],
 })
