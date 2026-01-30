@@ -1,14 +1,15 @@
 import { Injectable } from "@nestjs/common";
 import { CreateListingDto } from "./dto/create-listing.dto";
-import { PrismaService } from "src/database/prisma.service";
+import { PrismaService } from "../../database/prisma.service";
 import { ListingProducer } from "./queue/listing.producers";
 
 @Injectable()
 export class ListingService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly listingQueue: ListingProducer
+    private readonly listingQueue: ListingProducer,
   ) {}
+
   async create({
     data,
     images,
@@ -20,10 +21,12 @@ export class ListingService {
       data,
     });
     for (const image of images) {
-      // send image to queue
-      await this.listingQueue.createListingImage(image);
+      await this.listingQueue.uploadListingImage({
+        base64File: `TODO`, // <-- we'll get to this next
+        mimeType: image.mimetype,
+        listingId: listing.id,
+      });
     }
-
     return listing;
   }
 }
