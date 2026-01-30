@@ -7,6 +7,7 @@ import { ListingConsumer } from "./queue/lisitng.consumers";
 import { LISTING_QUEUE } from "./queue/queue.constant";
 import { BullBoardModule } from "@bull-board/nestjs";
 import { BullAdapter } from "@bull-board/api/bullAdapter";
+import { UtilitiesModule } from "src/utilities/utilities.module";
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { BullAdapter } from "@bull-board/api/bullAdapter";
       name: LISTING_QUEUE,
       adapter: BullAdapter,
     }),
+    UtilitiesModule,
   ],
   controllers: [ListingController],
   providers: [ListingService, ListingProducer, ListingConsumer],
